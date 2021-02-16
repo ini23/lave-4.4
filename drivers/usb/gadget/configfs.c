@@ -1683,12 +1683,6 @@ static inline void android_device_destroy(struct device *dev)
 {
 }
 #endif
-	.max_speed	= USB_SPEED_SUPER_PLUS,
-	.driver = {
-		.owner          = THIS_MODULE,
-		.name		= "configfs-gadget",
-	},
-};
 
 static struct config_group *gadgets_make(
 		struct config_group *group,
