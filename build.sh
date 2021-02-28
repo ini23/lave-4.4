@@ -1,8 +1,8 @@
 #!/bin/bash
 
-export KERNELNAME=Nofox
+export KERNELNAME=Nobita
 
-export LOCALVERSION=
+export LOCALVERSION=beta
 
 export KBUILD_BUILD_USER=irfannim
 

@@ -1,6 +1,6 @@
 kind: pipeline
 type: docker
-name: Nofox
+name: Nobita
 clone:
   depth: 1
 
