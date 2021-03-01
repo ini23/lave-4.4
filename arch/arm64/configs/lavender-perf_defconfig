@@ -119,6 +119,15 @@ CONFIG_PREEMPT=y
 CONFIG_PCI_LABEL=y
 
 #
+# PCI host controller drivers
+#
+# CONFIG_PCI_HOST_GENERIC is not set
+# CONFIG_PCIE_IPROC is not set
+# CONFIG_PCI_HISI is not set
+# CONFIG_PCIEPORTBUS is not set
+# CONFIG_HOTPLUG_PCI is not set
+
+#
 # ARM errata workarounds via the alternatives framework
 #
 CONFIG_ARM64_ERRATUM_826319=y
