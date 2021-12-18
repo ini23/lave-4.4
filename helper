@@ -40,23 +40,26 @@ send_msg(){
 
 send_file(){
 	print "Sending file..." green
-	curl -F chat_id="${chat_id}" \
-		-F caption="Build Berhasil! | RolleStrix | #funproject" \
+	SECONDS=$SECONDS
+	if (( $SECONDS > 0 )) ; then
+	   curl -F chat_id="${chat_id}" \
+		-F caption="" \
 		-F document=@"${1}" \
-		 https://api.telegram.org/bot"${bot_token}"/sendDocument
+		 https://api.telegram.org/bot"${bot_token}"/sendDocument 
+	fi
 }
 
 mkzip(){
 	print "Generate zip file..." green
 
-	if [ -f $(pwd)/out/arch/arm64/boot/Image.gz ]; then
-		cp $(pwd)/out/arch/arm64/boot/Image.gz  anykernel/kernel
+	if [ -f $(pwd)/out/arch/arm64/boot/Image.gz-dtb ]; then
+		cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb  anykernel
 		cd anykernel
 		zip -r9 ../$1 * -x .git README.md *placeholder
 		cd ..
 		send_file $1
 	else
-		send_msg "Build Gagal!, Harap Cek lagi"
+		send_msg "Build Failed !"
 		print "Build error !" red
 		exit 1
 	fi
@@ -79,12 +82,12 @@ gen_toolchain(){
 	print "Cloning toolchain files..." green
 	if [ $TOOLCHAIN == "clang" ]
 	then
-		git clone --depth=1 https://github.com/GengKapak/GengKapak-clang clang
+		git clone --depth=1 https://github.com/kdrag0n/proton-clang clang
 	else
 		git clone --depth=1 https://github.com/chips-project/aarch64-elf gcc64
 		git clone --depth=1 https://github.com/chips-project/arm-eabi gcc32
 	fi
-		git clone --depth=1 https://github.com/Xenoms/AnyKernel33 -b master anykernel
+	git clone --depth=1 https://github.com/Xenoms/AnyKernel33 -b master anykernel
 }
 
 build(){
@@ -97,7 +100,8 @@ build(){
 	then
 		make_build "${1}-oldcam_defconfig"
 	else
-		make_build "${1}-oldcam_defconfig"
+		make_build "${1}-perf_defconfig"
+		send_msg "📝 $(git log --pretty=format:'%s' -5) 📝"
 	fi
-		mkzip "$KERNELNAME-$LOCALVERSION-${1}${2}${3}-$DATE.zip"
+		mkzip "$KERNELNAME-${1}${2}${3}-$DATE.zip"
 }
