@@ -2327,11 +2327,11 @@ unsigned long zs_compact(struct zs_pool *pool)
 			continue;
 		if (class->index != i)
 			continue;
-		pages_freed += __zs_compact(pool, class);
+		__zs_compact(pool, class);
 	}
 	atomic_long_add(pages_freed, &pool->stats.pages_compacted);
 
-	return pages_freed;
+	return pool->stats.pages_compacted;
 }
 EXPORT_SYMBOL_GPL(zs_compact);
 
@@ -2353,7 +2353,7 @@ static unsigned long zs_shrinker_scan(struct shrinker *shrinker,
 	 * Can run concurrently with a manually triggered
 	 * (by user) compaction.
 	 */
-	pages_freed = zs_compact(pool);
+	pages_freed = zs_compact(pool) - pages_freed;
 
 	return pages_freed ? pages_freed : SHRINK_STOP;
 }
